@@ -10,6 +10,7 @@ global with sharing class SDG
     global String sObjectName;
     global List<SDGAction> SDGActions;
     global List<SDGField> SDGFields;
+    global SDGSortField sortField;
 
     global SDG()
     {
@@ -25,6 +26,7 @@ global with sharing class SDG
     global SDG(String objectname, String ParentFieldName, String sObjectName, String sFilter, String sDefaultSort, String sUniqueKey)
     {
         this.sObjectName = objectName;
+        this.sortField = getDefaultSort(sDefaultSort);
 
         SDGInternal einternal = new SDGInternal();
         einternal.ParentFieldName = ParentFieldName;
@@ -38,6 +40,7 @@ global with sharing class SDG
     global SDG(String objectname, String ParentFieldName, String sObjectName, String sFilter, String sDefaultSort, String sUniqueKey, Boolean AllRows)
     {
         this.sObjectName = objectName;
+        this.sortField = getDefaultSort(sDefaultSort);
 
         SDGInternal einternal = new SDGInternal();
         einternal.ParentFieldName = ParentFieldName;
@@ -49,7 +52,16 @@ global with sharing class SDG
         this.internalData = einternal;
     }
 
+    private SDGSortField getDefaultSort(String sortParam){
 
-
-
+        SDGSortField res = new SDGSortField();
+        if(String.isEmpty(sortParam))
+            return res; 
+        //Name ASC,
+        List<String> sortingParams = sortParam.split(',');
+        List<String> sortFieldAndType = sortingParams[0].split(' ');
+        res.sortingField = sortFieldAndType[0];
+        res.sortType = sortFieldAndType.size() == 2 && sortFieldAndType[1] == 'DESC' ? 'D' : 'A';
+        return res;
+    }
 }

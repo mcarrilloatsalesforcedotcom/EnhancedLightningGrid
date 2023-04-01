@@ -82,6 +82,10 @@
                             if (field.FieldStyle && field.FieldStyle.startsWith("Summarize")) {
                                 hasSummary = true;
                             }
+                            if(field.ColumnName == results.SDGObject.sortField.sortingField){
+                                component.set("v.SortColumn", field.ID);
+                                component.set("v.SortOrder", results.SDGObject.sortField.sortType);
+                            }
                         }
                         component.set("v.hasSummary", hasSummary);
                         component.set("v.hasFilters", hasFilters);
@@ -113,7 +117,6 @@
                             component.set("v.hasListMenu", hasListMenu);
                             component.set("v.hasRowActions", hasRowActions);
                             component.set("v.MultiSelectMode", hasMulti);
-
                         }
 
                         component.set("v.isLoaded", true);
